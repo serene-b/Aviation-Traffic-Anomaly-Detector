@@ -1,13 +1,8 @@
 import folium
-from cleaning import cleaning_data
-from detecting import detecting_anomalies
-
-def mapping():
-    cleaned_flights,anomalies_found,_=cleaning_data()
-    detectedanomalies= detecting_anomalies()
+def mapping(clean_flights,anomalies_found,detected_anomalies):
     m = folium.Map(location=[20, 0], zoom_start=3)
     
-    for plane in cleaned_flights:
+    for plane in clean_flights:
         lat = plane[6]
         lon = plane[5]
         callsign = plane[1] or "Unknown"
@@ -30,7 +25,7 @@ def mapping():
             tooltip=callsign
             ).add_to(m)
         
-    for plane in detectedanomalies:
+    for plane in detected_anomalies:
         lat = plane[6]
         lon = plane[5]
         callsign = plane[1]
@@ -44,5 +39,4 @@ def mapping():
             fill=True,
             tooltip = "ML Anomaly | " + (callsign or "Unknown") + " | Speed: " + str(velocity) + " m/s | Alt: " + str(altitude) + "m | V-rate: " + str(vertical_rate) + " m/s"
                 ).add_to(m)
-    m.save("flights_map_.html")
     return m

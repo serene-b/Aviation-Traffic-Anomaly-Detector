@@ -8,6 +8,9 @@ def Not_empty(icao24,callsign,origin_country,time_position,longitude,latitude,al
 
 def cleaning_data():
     data=fetch_fights()
+    if data is None or data.get('states') is None:
+        return [], [], 0
+    
     current_time=time.time()
     cleaned_flights = []
     anomalies_found= []
