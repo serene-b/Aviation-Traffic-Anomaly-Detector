@@ -4,7 +4,7 @@ from cleaning import cleaning_data
 from detecting import detecting_anomalies
 from mapping import mapping
 from streamlit_folium import st_folium
-
+st.write(st.secrets)
 st.set_page_config(page_title="Flight Anomaly Detector", layout="wide")
 st_autorefresh(interval=600000, key="refresh")
 st.title("✈️ Live Flight Anomaly Detector")
