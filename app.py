@@ -8,8 +8,10 @@ from streamlit_folium import st_folium
 st.set_page_config(page_title="Flight Anomaly Detector", layout="wide")
 st_autorefresh(interval=600000, key="refresh")
 st.title("✈️ Live Flight Anomaly Detector")
+st.write("Starting fetch...")
 try:
     clean_flights, anomalies_found, total_flights = cleaning_data()
+    st.write("Got data:", total_flights)
     detected_anomalies = detecting_anomalies(clean_flights)
     map = mapping(clean_flights, anomalies_found, detected_anomalies)
     st.sidebar.metric("Total number of flights: ", total_flights)
