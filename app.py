@@ -8,7 +8,15 @@ from streamlit_folium import st_folium
 st.set_page_config(page_title="Flight Anomaly Detector", layout="wide")
 st_autorefresh(interval=600000, key="refresh")
 st.title("✈️ Live Flight Anomaly Detector")
-st.write("Starting fetch...")
-st.write("about to fetch")
-result = cleaning_data()
-st.write("done fetching", result)
+
+try:
+    clean_flights, anomalies_found, total_flights = cleaning_data()
+    detected_anomalies = detecting_anomalies(clean_flights)
+    map = mapping(clean_flights, anomalies_found, detected_anomalies)
+    st.sidebar.metric("Total number of flights: ", total_flights)
+    st.sidebar.metric("total number of clean flights: ", len(clean_flights))
+    st.sidebar.metric("Number of Detected anomalies (rule based): ", len(anomalies_found))
+    st.sidebar.metric("Number of Detected anomalies (Ml flags): ", len(detected_anomalies))
+    st_folium(map, width=1400, height=600)
+except Exception as e:
+    st.error(f"Error: {e}")
